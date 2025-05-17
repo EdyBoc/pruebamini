@@ -43,6 +43,7 @@ class PersonaController extends Controller
     public function show(Persona $persona)
     {
         return $persona;
+        //http://127.0.0.1:8000/personas/crear
     }
 
     public function update(Request $request, $id)
