@@ -139,13 +139,11 @@ const cambiarEstado = async (id, nuevoEstado) => {
 </script>
 
 <template>
-    <div class="p-6 max-w-7xl mx-auto">
-        <h1 class="text-2xl font-bold mb-4">Lista de Personas registradas</h1>
+    <div class="p-6 max-w-3xl mx-auto">
+        <h1 class="text-3xl font-bold text-center text-blue-800 mb-8">Lista de Personas Registradas</h1>
 
-        <table
-            class="w-full text-sm text-left text-gray-700 bg-white shadow-md rounded-lg overflow-hidden"
-        >
-            <thead class="text-xs uppercase bg-blue-600 text-white">
+        <table class="w-full text-sm text-left text-gray-700 bg-white shadow-lg rounded-xl overflow-hidden">
+            <thead class="text-xs uppercase bg-gradient-to-r from-blue-700 to-blue-500 text-white">
                 <tr>
                     <th class="px-6 py-3">Nombre</th>
                     <th class="px-6 py-3">Apellido</th>
@@ -155,319 +153,157 @@ const cambiarEstado = async (id, nuevoEstado) => {
                 </tr>
             </thead>
             <tbody>
-                <tr
-                    v-for="p in personas"
-                    :key="p.id"
-                    class="border-b hover:bg-blue-50 transition"
-                >
-                    <td
-                        class="px-6 py-4 whitespace-nowrap font-medium text-gray-900"
-                    >
+                <tr v-for="p in personas" :key="p.id" class="border-b hover:bg-blue-50 transition duration-150 ease-in-out">
+                    <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">
                         {{ p.primer_nombre }} {{ p.segundo_nombre }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         {{ p.primer_apellido }} {{ p.segundo_apellido }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">{{ p.cui }}</td>
-                    <td
-                        class="px-6 py-4 font-semibold capitalize whitespace-nowrap"
-                        :class="{
-                            'text-yellow-500': p.estado === 'pendiente',
-                            'text-green-600': p.estado === 'aprobado',
-                            'text-red-600': p.estado === 'rechazado',
-                        }"
-                    >
+                    <td class="px-6 py-4 font-semibold capitalize whitespace-nowrap" :class="{
+                        'text-yellow-500': p.estado === 'pendiente',
+                        'text-green-600': p.estado === 'aprobado',
+                        'text-red-600': p.estado === 'rechazado'
+                    }">
                         {{ p.estado }}
                     </td>
                     <td class="px-6 py-4 text-center">
                         <template v-if="rol === 'Técnico Analista'">
                             <div class="flex flex-wrap justify-center gap-2">
-                                <button
-                                    class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
-                                    @click="editarPersona(p)"
-                                >
+                                <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm" @click="editarPersona(p)">
                                     Editar
                                 </button>
-                                <button
-                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
-                                    @click="eliminarPersona(p.id)"
-                                >
+                                <button class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm" @click="eliminarPersona(p.id)">
                                     Eliminar
                                 </button>
-                                <button
-                                    v-if="p.ruta_archivo"
-                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm"
-                                    @click="verArchivo(p.ruta_archivo)"
-                                >
+                                <button v-if="p.ruta_archivo" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded text-sm" @click="verArchivo(p.ruta_archivo)">
                                     Ver PDF
                                 </button>
-                                <button
-                                    v-if="p.estado === 'pendiente'"
-                                    class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm"
-                                    @click="cambiarEstado(p.id, 'aprobado')"
-                                >
+                                <button v-if="p.estado === 'pendiente'" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm" @click="cambiarEstado(p.id, 'aprobado')">
                                     Aprobar
                                 </button>
-                                <button
-                                    v-if="p.estado === 'pendiente'"
-                                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm"
-                                    @click="cambiarEstado(p.id, 'rechazado')"
-                                >
+                                <button v-if="p.estado === 'pendiente'" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm" @click="cambiarEstado(p.id, 'rechazado')">
                                     Rechazar
                                 </button>
                             </div>
                         </template>
                         <template v-else>
-                            <span class="text-gray-500 italic text-sm"
-                                >Sin acciones</span
-                            >
+                            <span class="text-gray-500 italic text-sm">Sin acciones</span>
                         </template>
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        <div v-if="rol === 'Técnico Analista' && modoEdicion" class="mb-10">
-            <h2 class="text-xl font-semibold mb-4">Editar Persona</h2>
-            <form
-                @submit.prevent="guardarPersona"
-                class="space-y-4 bg-gray-100 p-4 rounded"
-            >
-                <div class="grid grid-cols-2 gap-4">
+        <div v-if="rol === 'Técnico Analista' && modoEdicion" class="mt-10 bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-blue-800 mb-6 text-center">Editar Persona</h2>
+            <form @submit.prevent="guardarPersona" class="space-y-6">
+                <div class="space-y-4">
                     <div>
-                        <label>Primer Nombre:</label>
-                        <input
-                            v-model="form.primer_nombre"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p
-                            v-if="errores.primer_nombre"
-                            class="text-red-600 text-sm"
-                        >
-                            {{ errores.primer_nombre[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Primer Nombre:</label>
+                        <input v-model="form.primer_nombre" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.primer_nombre" class="text-red-600 text-sm">{{ errores.primer_nombre[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Segundo Nombre:</label>
-                        <input
-                            v-model="form.segundo_nombre"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p
-                            v-if="errores.segundo_nombre"
-                            class="text-red-600 text-sm"
-                        >
-                            {{ errores.segundo_nombre[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Segundo Nombre:</label>
+                        <input v-model="form.segundo_nombre" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.segundo_nombre" class="text-red-600 text-sm">{{ errores.segundo_nombre[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Primer Apellido:</label>
-                        <input
-                            v-model="form.primer_apellido"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p
-                            v-if="errores.primer_apellido"
-                            class="text-red-600 text-sm"
-                        >
-                            {{ errores.primer_apellido[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Primer Apellido:</label>
+                        <input v-model="form.primer_apellido" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.primer_apellido" class="text-red-600 text-sm">{{ errores.primer_apellido[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Segundo Apellido:</label>
-                        <input
-                            v-model="form.segundo_apellido"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p
-                            v-if="errores.segundo_apellido"
-                            class="text-red-600 text-sm"
-                        >
-                            {{ errores.segundo_apellido[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Segundo Apellido:</label>
+                        <input v-model="form.segundo_apellido" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.segundo_apellido" class="text-red-600 text-sm">{{ errores.segundo_apellido[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Apellido de Casada:</label>
-                        <input
-                            v-model="form.apellido_casada"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p
-                            v-if="errores.apellido_casada"
-                            class="text-red-600 text-sm"
-                        >
-                            {{ errores.apellido_casada[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Apellido de Casada:</label>
+                        <input v-model="form.apellido_casada" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.apellido_casada" class="text-red-600 text-sm">{{ errores.apellido_casada[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Tipo Documento:</label>
-                        <input
-                            v-model="form.tipo_documento"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p
-                            v-if="errores.tipo_documento"
-                            class="text-red-600 text-sm"
-                        >
-                            {{ errores.tipo_documento[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Tipo Documento:</label>
+                        <input v-model="form.tipo_documento" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.tipo_documento" class="text-red-600 text-sm">{{ errores.tipo_documento[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Pasaporte:</label>
-                        <input
-                            v-model="form.pasaporte"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p
-                            v-if="errores.pasaporte"
-                            class="text-red-600 text-sm"
-                        >
-                            {{ errores.pasaporte[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Pasaporte:</label>
+                        <input v-model="form.pasaporte" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.pasaporte" class="text-red-600 text-sm">{{ errores.pasaporte[0] }}</p>
                     </div>
 
                     <div>
-                        <label>CUI:</label>
-                        <input
-                            v-model="form.cui"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p v-if="errores.cui" class="text-red-600 text-sm">
-                            {{ errores.cui[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">CUI:</label>
+                        <input v-model="form.cui" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.cui" class="text-red-600 text-sm">{{ errores.cui[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Fecha de Nacimiento:</label>
-                        <input
-                            v-model="form.fecha_nacimiento"
-                            type="date"
-                            class="border w-full"
-                        />
-                        <p
-                            v-if="errores.fecha_nacimiento"
-                            class="text-red-600 text-sm"
-                        >
-                            {{ errores.fecha_nacimiento[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Fecha de Nacimiento:</label>
+                        <input v-model="form.fecha_nacimiento" type="date" class="border w-full p-2 rounded" />
+                        <p v-if="errores.fecha_nacimiento" class="text-red-600 text-sm">{{ errores.fecha_nacimiento[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Teléfono:</label>
-                        <input
-                            v-model="form.telefono"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p v-if="errores.telefono" class="text-red-600 text-sm">
-                            {{ errores.telefono[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Teléfono:</label>
+                        <input v-model="form.telefono" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.telefono" class="text-red-600 text-sm">{{ errores.telefono[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Email:</label>
-                        <input
-                            v-model="form.email"
-                            type="email"
-                            class="border w-full"
-                        />
-                        <p v-if="errores.email" class="text-red-600 text-sm">
-                            {{ errores.email[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Email:</label>
+                        <input v-model="form.email" type="email" class="border w-full p-2 rounded" />
+                        <p v-if="errores.email" class="text-red-600 text-sm">{{ errores.email[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Sexo:</label>
-                        <input
-                            v-model="form.sexo"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p v-if="errores.sexo" class="text-red-600 text-sm">
-                            {{ errores.sexo[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Sexo:</label>
+                        <input v-model="form.sexo" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.sexo" class="text-red-600 text-sm">{{ errores.sexo[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Estado Civil:</label>
-                        <input
-                            v-model="form.estado_civil"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p
-                            v-if="errores.estado_civil"
-                            class="text-red-600 text-sm"
-                        >
-                            {{ errores.estado_civil[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Estado Civil:</label>
+                        <input v-model="form.estado_civil" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.estado_civil" class="text-red-600 text-sm">{{ errores.estado_civil[0] }}</p>
                     </div>
 
                     <div>
-                        <label>Dirección:</label>
-                        <input
-                            v-model="form.direccion"
-                            type="text"
-                            class="border w-full"
-                        />
-                        <p
-                            v-if="errores.direccion"
-                            class="text-red-600 text-sm"
-                        >
-                            {{ errores.direccion[0] }}
-                        </p>
+                        <label class="block text-gray-700 font-semibold mb-1">Dirección:</label>
+                        <input v-model="form.direccion" type="text" class="border w-full p-2 rounded" />
+                        <p v-if="errores.direccion" class="text-red-600 text-sm">{{ errores.direccion[0] }}</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-1">Archivo (PDF, máx 1MB):</label>
+                        <input type="file" @change="handleArchivo" accept="application/pdf" class="w-full" />
+                        <p v-if="errores.archivo" class="text-red-600 text-sm">{{ errores.archivo[0] }}</p>
                     </div>
                 </div>
 
-                <div>
-                    <label>Archivo (PDF, máx 1MB):</label>
-                    <input
-                        type="file"
-                        @change="handleArchivo"
-                        accept="application/pdf"
-                    />
-                    <p v-if="errores.archivo" class="text-red-600 text-sm">
-                        {{ errores.archivo[0] }}
-                    </p>
-                </div>
-
-                <div class="flex gap-4 mt-4">
-                    <button
-                        type="submit"
-                        class="bg-green-600 text-white px-4 py-2 rounded"
-                    >
+                <div class="flex justify-end gap-4 mt-6">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">
                         Guardar Cambios
                     </button>
-                    <button
-                        type="button"
-                        class="bg-gray-500 text-white px-4 py-2 rounded"
-                        @click="cancelarEdicion"
-                    >
+                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded shadow" @click="cancelarEdicion">
                         Cancelar
                     </button>
                 </div>
             </form>
         </div>
 
-        <div v-if="rol === 'Usuario Normal'" class="mt-4">
-            <a
-                href="/personas/crear"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded shadow transition-colors duration-200"
-            >
+        <div v-if="rol === 'Usuario Normal'" class="mt-8 text-center">
+            <a href="/personas/crear" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow transition-colors duration-300">
                 Crear nuevo
             </a>
         </div>
