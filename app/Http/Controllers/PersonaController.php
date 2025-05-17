@@ -61,7 +61,7 @@ class PersonaController extends Controller
             'sexo' => 'required|string|in:M,F,Otro',
             'estado_civil' => 'required|string|max:100',
             'direccion' => 'required|string',
-            'archivo' => 'nullable|file|mimes:pdf|max:1024', // 1MB
+            'archivo' => 'nullable|file|mimes:pdf|max:1024',
         ]);
 
         if ($request->has('estado')) {
