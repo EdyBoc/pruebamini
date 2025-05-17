@@ -293,7 +293,7 @@ const cambiarEstado = async (id, nuevoEstado) => {
 
                 <div class="flex justify-end gap-4 mt-6">
                     <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">
-                        Guardar Cambios
+                        Guardar
                     </button>
                     <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded shadow" @click="cancelarEdicion">
                         Cancelar
@@ -304,7 +304,7 @@ const cambiarEstado = async (id, nuevoEstado) => {
 
         <div v-if="rol === 'Usuario Normal'" class="mt-8 text-center">
             <a href="/personas/crear" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded shadow transition-colors duration-300">
-                Crear nuevo
+                Crear
             </a>
         </div>
     </div>
